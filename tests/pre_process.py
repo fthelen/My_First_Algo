@@ -27,66 +27,65 @@ df_full = pd.concat([sp500['log_ret'],sun['mean']],axis=1,join='inner')
 df_full['log_ret'] = df_full['log_ret'].shift(-1)
 df_full.dropna(inplace=True)
 
+# # Shape (instances, attributes)
+# print(df_full.shape)
+
+# Head
 print(df_full.head())
 print(df_full.tail())
 
-# # Shape (instances, attributes)
-# print(dataset.shape)
-
-# # Head
-# print(dataset.head(20))
-
 # # Descriptions
-# print(dataset.describe())
+# print(df_full.describe())
 
 # # Class distribution
-# print(dataset.groupby('class').size())
+# print(df_full.groupby('class').size())
 
 # # Box and whisker plots
-# dataset.plot(kind='box',subplots=True, layout=(2,2), sharex=False, sharey=False)
+# df_full.plot(kind='box',subplots=True, layout=(2,2), sharex=False, sharey=False)
 # plt.show()
 
 # # Histograms
-# dataset.hist()
+# df_full.hist()
 # plt.show()
 
-# # Scatter plot matrix
-# scatter_matrix(dataset)
-# plt.show()
+# Scatter plot matrix
+scatter_matrix(df_full)
+plt.show()
 
-# # Split-out validation dataset
-# array = dataset.values
-# X = array[:,0:4]
+# Split-out validation df_full
+array = df_full.values
+# print(array)
+X, Y = array[:,1], array[:,0]
 # print(X)
-# Y = array[:,4]
 # print(Y)
-# validation_size = 0.20
-# seed = 7
-# X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(X, Y, test_size=validation_size, random_state=seed)
 
-# # Test options and evaluation metric
-# seed = 7
-# scoring = 'accuracy'
+validation_size = 0.20
+seed = 7
+X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(X, Y, test_size=validation_size, random_state=seed)
 
-# # Spot Check Algorithms
-# models = []
-# models.append(('LR', LogisticRegression(solver='liblinear', multi_class='ovr')))
-# models.append(('LDA', LinearDiscriminantAnalysis()))
-# models.append(('KNN', KNeighborsClassifier()))
-# models.append(('CART', DecisionTreeClassifier()))
-# models.append(('NB', GaussianNB()))
-# models.append(('SVM', SVC(gamma='auto')))
+# Test options and evaluation metric
+seed = 7
+scoring = 'accuracy'
 
-# # evaluate each model in turn
-# results = []
-# names = []
-# for name, model in models:
-# 	kfold = model_selection.KFold(n_splits=10, random_state=seed)
-# 	cv_results = model_selection.cross_val_score(model, X_train, Y_train, cv=kfold, scoring=scoring)
-# 	results.append(cv_results)
-# 	names.append(name)
-# 	msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
-# 	print(msg)
+# Spot Check Algorithms
+models = []
+models.append(('LR', LogisticRegression(solver='liblinear', multi_class='ovr')))
+models.append(('LDA', LinearDiscriminantAnalysis()))
+models.append(('KNN', KNeighborsClassifier()))
+models.append(('CART', DecisionTreeClassifier()))
+models.append(('NB', GaussianNB()))
+models.append(('SVM', SVC(gamma='auto')))
+
+# evaluate each model in turn
+results = []
+names = []
+for name, model in models:
+	kfold = model_selection.KFold(n_splits=10, random_state=seed)
+	cv_results = model_selection.cross_val_score(model, X_train, Y_train, cv=kfold, scoring=scoring)
+	results.append(cv_results)
+	names.append(name)
+	msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
+	print(msg)
 
 # # Compare Algorithms
 # fig = plt.figure()
@@ -96,7 +95,7 @@ print(df_full.tail())
 # ax.set_xticklabels(names)
 # # plt.show()
 
-# # Make predictions on validation dataset
+# # Make predictions on validation df_full
 # knn = KNeighborsClassifier()
 # knn.fit(X_train, Y_train)
 # predictions = knn.predict(X_validation)
