@@ -1,7 +1,7 @@
 import pandas as pd
 import fix_yahoo_finance as yf
 
-period = '10y'
+period = 'max'
 interval = '1mo'
 ticker = '^GSPC'
 
