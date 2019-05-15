@@ -19,7 +19,6 @@ sunspot = pd.read_csv(r'tests\mean_sunspots.csv', parse_dates=True, index_col=0)
 moon = pd.read_csv(r'tests\lunar_eclipse.csv', parse_dates=True, index_col=0)
 solar = pd.read_csv(r'tests\solar_eclipse.csv', parse_dates=True, index_col=0)
 
-
 df_full = pd.concat([sunspot['mean_sunspots'],moon['gamma_lunar_eclipse'],solar['gamma_solar_eclipse'],sp500['log_ret']],axis=1,join='inner')
 df_full['log_ret'] = df_full['log_ret'].shift(-4)
 df_full.dropna(inplace=True)
